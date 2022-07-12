@@ -6,6 +6,20 @@
 //         console.log(data)
 //     })
 
+let titleProcessor = (str) => {
+    let arr = str.split('')
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === "_") {
+            arr[i] = " "
+        }
+    }
+    let newStr = ""
+    for (let i = 0; i < arr.length; i++) {
+        newStr += arr[i]
+    }
+    return newStr
+}
+
 let form = document.querySelector('#form')
 
 form.addEventListener('submit', (e) => {
@@ -37,8 +51,33 @@ form.addEventListener('submit', (e) => {
         bar2.style.height = `${secondRatio}%`
         bar3.style.height = `${thirdRatio}%`
 
+        //getting the page info
+        let p1 = document.querySelector('#p1')
+        let p2 = document.querySelector('#p2')
+        let p3 = document.querySelector('#p3')
 
-        console.log(data.items[0].articles[2])
+        // let x = first.article
+        // for (let i = 0; i < x.length; i++) {
+        //     if (x[i] === "_") {
+        //        x.charAt(i) = " "
+        //     }
+        // }
+        // console.log(x)
+
+        p1.innerText = `${titleProcessor(first.article)}
+                      Views: ${first.views}`
+        p2.innerText = `${titleProcessor(second.article)}
+                      Views: ${second.views}`
+        p3.innerText = `${titleProcessor(third.article)}
+                      Views: ${third.views}`
+
+
+        // function makeLabel(arrOfObjs) {
+        //     p1.innerText = arrOfObjs[2].article
+        // }
+
+        // makeLabel(data[0].articles)
     })
 
 })
+
