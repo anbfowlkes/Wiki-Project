@@ -11,6 +11,7 @@
 <body>
     <h1>Welcome to the Wikipedia Viewer</h1>
     <h2>Enter the date of the wikipedia rankings you're interested in:</h2>
+    <p id="specifics">(from July 1st, 2015 to yesterday)</p>
     <form id="form">
         <div id="form-container">
             <div id="m">
@@ -31,6 +32,13 @@
         </div>
     </form>
     <div id="display">
+    <!-- START HERE
+        <div id="labels">
+        <div id="label1"></div>
+        <div id="label2"></div>
+        <div id="label3"></div>
+    </div> -->
+        <div id="scale"></div>
         <div id="bar1"></div>
         <div id="bar2"></div>
         <div id="bar3"></div>
@@ -44,16 +52,19 @@
             <p id="p3"></p>
         </div>
     </div>
+    <h2 id="events"></h2>
     <div id="happenings">
-        <h2 id="events"></h2>
         <div id="hap1">
-            <p id="link1"></p>
+            <a id="hl1"><p id="link1"></p></a>
+            <a id=wikilink1><p id="wiki1"></p></a>
         </div>
         <div id="hap2">
-            <p id="link2"></p>
+            <a id="hl2"><p id="link2"></p></a>
+            <a id=wikilink2><p id="wiki2"></p></a>
         </div>
         <div id="hap3">
-            <p id="link3"></p>
+            <a id="hl3"><p id="link3"></p></a>
+            <a id=wikilink3><p id="wiki3"></p></a>
         </div>
     </div>
 </body>
