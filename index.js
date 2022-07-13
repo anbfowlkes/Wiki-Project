@@ -13,6 +13,9 @@ let titleProcessor = (str) => {
 }
 
 let linkMaker = (title, m, d, y) => {
+    m = m.toString()
+    d = d.toString()
+    y = y.toString()
     if (m.substring(0, 1) === "0") {
         m = m.substring(1)
     }
@@ -121,19 +124,51 @@ let dayVerifier = (month, day, year) => {
         }
     }
 }
-
+let month
+let day
+let year
 let cardContainer = document.querySelector('#cardContainer')
 
 let cardCreator = (num, data) => {
-    newDiv = document.createElement('div')
-    wikiTitle = document.createElement('p')
-    wikiViews = document.createElement('p')
-    wikiLink = document.createElement('p')
-    daySearch = document.createElement('p')
-    wikiTitle.innerText = data[num].article
+    let newDiv = document.createElement('div')
+    let leftDiv = document.createElement('div')
+    let rightDiv = document.createElement('div')
+    let wikiTitle = document.createElement('p')
+    let wikiViews = document.createElement('p')
+    let wikiHL = document.createElement('p')
+    let aTag = document.createElement('a')
+    let daySearch = document.createElement('p')
+    let topicalLink = (linkMaker(titleProcessor(data[num].article),
+        document.querySelector('#month').value,
+        document.querySelector('#day').value,
+        document.querySelector('#year').value))
+    wikiTitle.innerText = titleProcessor(data[num].article)
+    wikiTitle.setAttribute('id', 'wikiTitle')
+    wikiViews.innerText =  `Views: ${numDisplayer(data[num].views.toString())}`
+    wikiViews.setAttribute('id', 'wikiViews')
+    aTag.innerText = 'Wikipedia Link'
+    aTag.setAttribute('href', `https://en.wikipedia.org/wiki/${titleProcessor(data[num].article) }`)
+    wikiHL.append(aTag)
+    wikiHL.setAttribute('id', 'wikiHL')
+    topicalTag = document.createElement('a')
+    topicalTag.innerText = "What's Happening"
+    topicalTag.setAttribute('href', topicalLink)
+    daySearch.append(topicalTag)
+    daySearch.setAttribute('id', 'daySearch')
     newDiv.setAttribute('id', 'newDiv')
+    leftDiv.setAttribute('id', 'leftDiv')
+    rightDiv.setAttribute('id', 'rightDiv')
+    newDiv.append(leftDiv)
+    newDiv.append(rightDiv)
     cardContainer.append(newDiv)
-    newDiv.append(wikiTitle)
+    
+    leftDiv.append(wikiTitle)
+    leftDiv.append(wikiViews)
+    rightDiv.append(daySearch)
+    rightDiv.append(wikiHL)
+    console.log(wikiHL)
+    console.log(aTag)
+    
 }
 let runCount = 0
 
@@ -311,6 +346,9 @@ form.addEventListener('submit', (e) => {
         let n = 0
         let btnDiv
         let btn
+        let btnCount = 0
+        let btnForMore
+        let btnForMoreDiv = document.querySelector('#btnForMoreDiv')
         if (runCount == 0) {
             console.log('hello its at zero')
             btnDiv = document.querySelector('#btnDiv')
@@ -325,6 +363,23 @@ form.addEventListener('submit', (e) => {
             for (n; n < 10; n++) {
                 cardCreator(n, artArr)
             }
+            if (btnCount === 0) {
+                console.log('hello, its at zero here')
+                btnForMore = document.createElement('button')
+                btnForMore.setAttribute('id', 'btnForMore')
+                btnForMoreDiv.append(btnForMore)
+                console.log('here comes the btncount')
+                btnCount++
+                console.log(btnCount)
+            }
+            btnForMore.addEventListener('click', (e) => {
+                let k = n + 10
+                for (n; n < k; n++) {
+                    cardCreator(n, artArr)
+                }
+                console.log(n)
+            }
+            )
         })
     })
 })
