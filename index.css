@@ -1,5 +1,6 @@
 :root {
     --color1: #aaa;
+    --buttonColor: #64750c;
 }
 
 * {
@@ -45,7 +46,7 @@ input[type="submit"] {
         display: block;
         width: 60px;
         font-size: 1.1rem;
-        background-color: #64750c;
+        background-color: var(--buttonColor);
         border-color: white;
     }
 
@@ -64,17 +65,33 @@ input[type="submit"] {
     background-color: black;
 }
 
+#scaleLabel {
+    height: 300px;
+    width: 80px;
+    margin: 0 -90px;
+    /* border: solid black; */
+    float: left;
+    display: flex;
+    flex-direction: column;
+}
+
 #labels {
     display: flex;
     flex-direction: column;
 }
 
 #label1, #label2, #label3 {
-    border: solid black;
-    margin: 20px -70px;
-    height: 20px;
-    width: 80px;
+    /* border: solid black; */
+    height: 10px;
+    width: 50px;
+    margin-left: 30px;
+    position: absolute;
+}
 
+#axisLabel1, #axisLabel2, #axisLabel3 {
+    font-size: 12px;
+    margin-top: -2px;
+    float: right;
 }
 
 #bar1, #bar2, #bar3 {
@@ -125,6 +142,7 @@ input[type="submit"] {
 #happenings {
     display: flex;
     justify-content: center;
+    margin-bottom: 50px;
 }
 
 #hap1, #hap2, #hap3 {
@@ -132,4 +150,26 @@ input[type="submit"] {
     width: 200px;
     height: 100px;
     margin: 0 20px;
+}
+
+#cardButton {
+    width: 200px;
+    height: 20px;
+    background-color: var(--buttonColor);
+    position: relative;
+    top: -25px;
+    margin-top: 20px;
+}
+
+
+#cardContainer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#newDiv {
+    width: 50%;
+    height: 100px;
+    border: solid black;
 }

@@ -29,6 +29,114 @@ let linkMaker = (title, m, d, y) => {
     return `https://www.google.com/search?q=${search}`
 }
 
+let numDisplayer = (number) => {
+    let numArr = number.split('')
+    let len = numArr.length
+    for (pos = numArr.length; pos > 0; pos--) {
+        if ((len - pos) % 3 == 0 && len - pos != 0) {
+            numArr.splice(pos, 0, ',')
+        }
+    }
+    let numWithCommas = ""
+    for (let i = 0; i < numArr.length; i++) {
+        numWithCommas += numArr[i]
+    }
+    return numWithCommas
+}
+
+let dayVerifier = (month, day, year) => {
+    //testing whether or not the day is entered correctly
+    let todaysDate = new Date()
+    let todaysDay = todaysDate.getDate()
+    let todaysMonth = todaysDate.getMonth() + 1
+    let todaysYear = todaysDate.getFullYear()
+    if (!(/\d\d/.test(month))) {
+        alert('Error, please enter your month as two digits.')
+        return false
+    }
+    if (!(/\d\d/.test(day))) {
+        alert('Error, please enter your day as two digits.')
+        return false
+    }
+    if (!(/\d\d\d\d/.test(year))) {
+        alert('Error, please enter your year as four digits.')
+        return false
+    }
+    if (year < 2015) {
+        alert('Error, please enter a day after 07/01/2015.')
+        return false
+    }
+    //only a ==, otherwise it wouldn't work
+    //I'm doing this instead of converting data types
+    if (month == 1 || month == 3 || month == 5 || month == 7 ||
+        month == 8 || month == 10 || month == 12) {
+        if (day > 31) {
+            alert('Error, please enter a valid day.')
+            return false
+        }
+    }
+    if (month == 4 || month == 6 || month == 9 || month == 11) {
+        if (day > 30) {
+            alert('Error, please enter a valid day.')
+            return false
+        }
+    }
+    if (month == 2) {
+        if (year % 4 == 0) {
+            if (day > 29) {
+                alert('Error, please enter a valid day.')
+                return false
+            }
+        }
+        else if (day > 28) {
+            alert('Error, please enter a valid day.')
+            return false
+        }
+    }
+    if (month > 12) {
+        alert('Error, please enter a valid month.')
+        return false
+    }
+
+    if (year == 2015) {
+        if (month < 7) {
+            alert('Errer, please enter a day after 07/01/2015')
+            return false
+        }
+    }
+    if (year > todaysYear) {
+        alert('Error, please do not enter a future date.')
+        return false
+    }
+    if (year == todaysYear) {
+        if (month > todaysMonth) {
+            alert('Error, please do not enter a future date.')
+            return false
+        }
+        if (month == todaysMonth) {
+            if (day >= todaysDay) {
+                alert('Error, please do not enter a future or current date.')
+                return false
+            }
+        }
+    }
+}
+
+let cardContainer = document.querySelector('#cardContainer')
+
+let cardCreator = (num, data) => {
+    newDiv = document.createElement('div')
+    wikiTitle = document.createElement('p')
+    wikiViews = document.createElement('p')
+    wikiLink = document.createElement('p')
+    daySearch = document.createElement('p')
+    wikiTitle.innerText = data[num].article
+    newDiv.setAttribute('id', 'newDiv')
+    cardContainer.append(newDiv)
+    newDiv.append(wikiTitle)
+}
+let runCount = 0
+
 // let getImage = (url, params)
 
 let form = document.querySelector('#form')
@@ -40,83 +148,10 @@ form.addEventListener('submit', (e) => {
     let day = document.querySelector('#day').value
     let year = document.querySelector('#year').value
 
-    let todaysDate = new Date()
-    let todaysDay = todaysDate.getDate()
-    let todaysMonth = todaysDate.getMonth() + 1
-    let todaysYear = todaysDate.getFullYear()
-    console.log("Today Is", todaysDay, todaysMonth, todaysYear)
+    
 
-    //testing whether or not the day is entered correctly
-    if (!(/\d\d/.test(month))) {
-        alert('Error, please enter your month as two digits.')
+    if (dayVerifier(month, day, year) === false) {
         return
-    }
-    if (!(/\d\d/.test(day))) {
-        alert('Error, please enter your day as two digits.')
-        return
-    }
-    if (!(/\d\d\d\d/.test(year))) {
-        alert('Error, please enter your year as four digits.')
-        return
-    }
-    if (year < 2015) {
-        alert('Error, please enter a day after 07/01/2015.')
-        return
-    }
-    //only a ==, otherwise it wouldn't work
-    //I'm doing this instead of converting data types
-    if (month == 1 || month == 3 || month == 5 || month == 7 ||
-        month == 8 || month == 10 || month == 12) {
-            if (day > 31) {
-                alert('Error, please enter a valid day.')
-                return
-            }
-        }
-    if (month == 4 || month == 6 || month == 9 || month == 11) {
-        if (day > 30) {
-            alert('Error, please enter a valid day.')
-            return
-        }
-    }
-    if (month == 2) {
-        if (year % 4 == 0) {
-            if (day > 29) {
-                alert('Error, please enter a valid day.')
-                return
-            }
-        }
-        else if (day > 28) {
-            alert('Error, please enter a valid day.')
-            return
-        }
-    }
-    if (month > 12) {
-        alert('Error, please enter a valid month.')
-        return
-    }
-
-    if (year == 2015) {
-        if (month < 7) {
-            alert('Errer, please enter a day after 07/01/2015')
-            return
-        }
-    }
-    console.log(todaysMonth)
-    if (year > todaysYear) {
-        alert('Error, please do not enter a future date.')
-        return
-    }
-    if (year == todaysYear) {
-        if (month > todaysMonth) {
-            alert('Error, please do not enter a future date.')
-            return
-        }
-        if (month == todaysMonth) {
-            if (day >= todaysDay) {
-                alert('Error, please do not enter a future or current date.')
-                return
-            }
-        }
     }
 
     //fetching the data
@@ -135,7 +170,6 @@ form.addEventListener('submit', (e) => {
         //removing unwanted values
         //its important to iterate backwards so slicing
         //does not affect the other values
-        console.log(artArr[0].article)
         for (let i = 100; i >= 0; i--) {
             if (
             artArr[i].article == "Main_Page" ||
@@ -154,12 +188,6 @@ form.addEventListener('submit', (e) => {
                 artArr.splice(i,1)
             }
         }
-        // console.log(location1, location2, location3)
-        // artArr.splice(location3, 1)
-        // artArr.splice(location2, 1)
-        // // artArr.splice(location1, 1)
-        // console.log(artArr)
-
 
         let first = data.items[0].articles[0]
         let second = data.items[0].articles[1]
@@ -181,11 +209,10 @@ form.addEventListener('submit', (e) => {
         } else if (firstCount < 1000000) {
             ceiling = 1000000
         } else {
-            ceiling = firstCount * 1.1
+            ceiling = Math.floor(firstCount * 1.1)
         }
 
         let graphHeight = ceiling * (1/2000)
-        console.log(graphHeight)
         let display = document.querySelector('#display')
         let scale = document.querySelector('#scale')
         display.style.height = `${graphHeight}px`
@@ -196,9 +223,15 @@ form.addEventListener('submit', (e) => {
         let secondBar = secondCount * (1/2000)
         let thirdBar = thirdCount * (1/2000)
 
-        // let firstRatio = (firstCount/topThreeTotal) * 100
-        // let secondRatio = (secondCount/topThreeTotal) * 100
-        // let thirdRatio = (thirdCount/topThreeTotal) * 100
+        let label1 = document.querySelector('#label1')
+        let label2 = document.querySelector('#label2')
+        let label3 = document.querySelector('#label3')
+        let axisLabel1 = document.querySelector('#axisLabel1')
+        let axisLabel2 = document.querySelector('#axisLabel2')
+        let axisLabel3 = document.querySelector('#axisLabel3')
+        let info1 = document.querySelector('#info1')
+        let info2 = document.querySelector('#info2')
+        let info3 = document.querySelector('#info3')
     
         let bar1 = document.querySelector('#bar1')
         let bar2 = document.querySelector('#bar2')
@@ -206,29 +239,37 @@ form.addEventListener('submit', (e) => {
         bar1.style.height = `${firstBar}px`
         bar2.style.height = `${secondBar}px`
         bar3.style.height = `${thirdBar}px`
-
-        //START HERE
-        // let label1 = document.querySelector('#label1')
-        // let label2 = document.querySelector('#label2')
-        // let label3 = document.querySelector('#label3')
-        // let midHeight = graphHeight/2;
-        // label1.style.height = `${graphHeight}px`
-        // label2.style.height = `${midHeight}px`
-        // label3.style.height = `$0px`
+        label1.style.bottom = `${graphHeight-5}px`
+        label2.style.bottom = `${(graphHeight/2)-5}px`
+        label3.style.bottom = '-5px'
+        axisLabel1.innerText = `${numDisplayer(ceiling.toString())}`
+        axisLabel2.innerText = `${numDisplayer((ceiling/2).toString())}`
+        axisLabel3.innerText = `0`
+        info1.style.bottom = `${firstBar+20}px`
+        info2.style.bottom = `${secondBar+20}px`
+        info3.style.bottom = `${thirdBar+20}px`
+        if (graphHeight - firstBar < 20) {
+            display.style.paddingTop = '80px'
+        } else if (graphHeight - firstBar < 50) {
+            display.style.paddingTop = '50px'
+        } else {
+            display.style.paddingTop = '25px'
+        }
 
         //getting the page info locations
         let p1 = document.querySelector('#p1')
         let p2 = document.querySelector('#p2')
         let p3 = document.querySelector('#p3')
+        
 
         //titleProcessor removes the _'s from the data's titles
         //and replaces them with spaces
         p1.innerText = `${titleProcessor(first.article)}
-                      Views: ${first.views}`
+                      Views: ${numDisplayer(first.views.toString())}`
         p2.innerText = `${titleProcessor(second.article)}
-                      Views: ${second.views}`
+                      Views: ${numDisplayer(second.views.toString())}`
         p3.innerText = `${titleProcessor(third.article)}
-                      Views: ${third.views}`
+                      Views: ${numDisplayer(third.views.toString())}`
 
         let h2 = document.querySelector('#events')
         h2.innerText = "What happened on these days?"
@@ -267,8 +308,25 @@ form.addEventListener('submit', (e) => {
         wikilink3.setAttribute('href', `https://en.wikipedia.org/wiki/${third.article}`)
         wikilink3.setAttribute('target', '_blank')
         
+        let n = 0
+        let btnDiv
+        let btn
+        if (runCount == 0) {
+            console.log('hello its at zero')
+            btnDiv = document.querySelector('#btnDiv')
+            btn = document.createElement('button')
+            btn.setAttribute('id', 'cardButton')
+            btn.innerText = "Click here to see more"
+            btnDiv.append(btn)
+            n = 0
+            runCount++
+        }
+        btn.addEventListener('click', (e) => {
+            for (n; n < 10; n++) {
+                cardCreator(n, artArr)
+            }
+        })
     })
-
 })
 
 let url = 'https://en.wikipedia.org/w/api.php'
@@ -290,7 +348,7 @@ fetch(url)
     .then((res) => res.json())
     .then((data) => {
         let pages = data.query.pages
-        console.log(pages)
+        // console.log(pages)
         // for (let page in pages) {
         //     for (let img of pages[page].images) {
         //         console.log(img.title)
