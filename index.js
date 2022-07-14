@@ -124,9 +124,9 @@ let dayVerifier = (month, day, year) => {
         }
     }
 }
-let month
-let day
-let year
+// let month
+// let day
+// let year
 let cardContainer = document.querySelector('#cardContainer')
 
 let cardCreator = (num, data) => {
@@ -201,222 +201,265 @@ let runCount = 0
 let form = document.querySelector('#form')
 form.addEventListener('submit', (e) => {
     e.preventDefault()
+    //fetching the data
     //getting the input from the user
     let month = document.querySelector('#month').value
     let day = document.querySelector('#day').value
     let year = document.querySelector('#year').value
-
+    
     let h1 = document.querySelector('#h1')
-
+    
     if (dayVerifier(month, day, year) === false) {
         return
     }
     h1.style.marginTop = '20px';
-
-    postDate(month, day, year)
-
-
-    //fetching the data
     fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
     .then((res) => {
         return res.json()
     })
     .then((data) => {
-
-        //extracting the array of wikipedia pages
-        //there's 1000 of them, each with a title,
-        //a view count, and a rank
-        //they are presorted by view count
-        let artArr = data.items[0].articles
     
-        //removing unwanted values
-        //its important to iterate backwards so slicing
-        //does not affect the other values
-        for (let i = 100; i >= 0; i--) {
-            if (
-            artArr[i].article == "Main_Page" ||
-            artArr[i].article == "Special:Search" ||
-            artArr[i].article == "Special:CreateAccount" ||
-            artArr[i].article == "Special:Watchlist" ||
-            artArr[i].article == "Special:LinkSearch" ||
-            artArr[i].article == "Special:MobileMenu" ||
-            artArr[i].article == "Portal:Current_events" ||
-            artArr[i].article == "Special:CiteThisPage" ||
-            artArr[i].article == "Special:Book" ||
-            artArr[i].article == "404.php" ||
-            artArr[i].article == "Wikipedia:Contact_us" ||
-            artArr[i].article == "AMGTV"
-            ) {
-                artArr.splice(i,1)
-            }
+    // if (runCount === 0) {
+    //     postDate(month, day, year)
+    // }
+
+
+
+    // let req = await fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
+    // let data = await req.json()
+
+
+    //extracting the array of wikipedia pages
+    //there's 1000 of them, each with a title,
+    //a view count, and a rank
+    //they are presorted by view count
+    let artArr = data.items[0].articles
+
+    //removing unwanted values
+    //its important to iterate backwards so slicing
+    //does not affect the other values
+    for (let i = 100; i >= 0; i--) {
+        if (
+        artArr[i].article == "Main_Page" ||
+        artArr[i].article == "Special:Search" ||
+        artArr[i].article == "Special:CreateAccount" ||
+        artArr[i].article == "Special:Watchlist" ||
+        artArr[i].article == "Special:LinkSearch" ||
+        artArr[i].article == "Special:MobileMenu" ||
+        artArr[i].article == "Portal:Current_events" ||
+        artArr[i].article == "Special:CiteThisPage" ||
+        artArr[i].article == "Special:Book" ||
+        artArr[i].article == "404.php" ||
+        artArr[i].article == "Wikipedia:Contact_us" ||
+        artArr[i].article == "AMGTV"
+        ) {
+            artArr.splice(i,1)
         }
+    }
 
-        let first = data.items[0].articles[0]
-        let second = data.items[0].articles[1]
-        let third = data.items[0].articles[2]
-        let firstCount = first.views
-        let secondCount = second.views
-        let thirdCount = third.views
+    let first = data.items[0].articles[0]
+    let second = data.items[0].articles[1]
+    let third = data.items[0].articles[2]
+    let firstCount = first.views
+    let secondCount = second.views
+    let thirdCount = third.views
 
 
-        //calculations
-        let ceiling
-        if (firstCount < 250000) {
-            ceiling = 250000
-        } else if (firstCount < 500000) {
-            ceiling = 500000
-        } else if (firstCount < 750000) {
-            ceiling = 750000
-        } else if (firstCount < 1000000) {
-            ceiling = 1000000
-        } else {
-            ceiling = Math.floor(firstCount * 1.1)
+    //calculations
+    let ceiling
+    if (firstCount < 250000) {
+        ceiling = 250000
+    } else if (firstCount < 500000) {
+        ceiling = 500000
+    } else if (firstCount < 750000) {
+        ceiling = 750000
+    } else {
+        let x = Math.floor(firstCount * 1.1)
+        x = x.toString()
+        xArr = x.split('')
+        for (let i = xArr.length - 1; i > 1; i--) {
+            xArr[i] = '0'
         }
-
-        let graphHeight = ceiling * (1/2000)
-        let display = document.querySelector('#display')
-        let scale = document.querySelector('#scale')
-        display.style.height = `${graphHeight}px`
-        display.style.width = `700px`
-        scale.style.height = `${graphHeight}px`
-        scale.style.width = `2px`
-
-        let firstBar = firstCount * (1/2000)
-        let secondBar = secondCount * (1/2000)
-        let thirdBar = thirdCount * (1/2000)
-
-        let label1 = document.querySelector('#label1')
-        let label2 = document.querySelector('#label2')
-        let label3 = document.querySelector('#label3')
-        let axisLabel1 = document.querySelector('#axisLabel1')
-        let axisLabel2 = document.querySelector('#axisLabel2')
-        let axisLabel3 = document.querySelector('#axisLabel3')
-        let info1 = document.querySelector('#info1')
-        let info2 = document.querySelector('#info2')
-        let info3 = document.querySelector('#info3')
+        let newNum = ''
+        for (let i = 0; i < xArr.length; i++) {
+            newNum += xArr[i]
+        }
+        ceiling = parseInt(newNum)
+    }
     
-        let bar1 = document.querySelector('#bar1')
-        let bar2 = document.querySelector('#bar2')
-        let bar3 = document.querySelector('#bar3')
-        bar1.style.height = `${firstBar}px`
-        bar2.style.height = `${secondBar}px`
-        bar3.style.height = `${thirdBar}px`
-        label1.style.bottom = `${graphHeight-5}px`
-        label2.style.bottom = `${(graphHeight/2)-5}px`
-        label3.style.bottom = '-5px'
-        axisLabel1.innerText = `${numDisplayer(ceiling.toString())}`
-        axisLabel2.innerText = `${numDisplayer((ceiling/2).toString())}`
-        axisLabel3.innerText = `0`
-        info1.style.width = '200px'
-        info1.style.height = '50px'
-        info2.style.width = '200px'
-        info2.style.height = '50px'
-        info3.style.width = '200px'
-        info3.style.height = '50px'
-        info1.style.bottom = `${firstBar+20}px`
-        info2.style.bottom = `${secondBar+20}px`
-        info3.style.bottom = `${thirdBar+20}px`
-        if (graphHeight - firstBar < 20) {
-            display.style.paddingTop = '80px'
-        } else if (graphHeight - firstBar < 50) {
-            display.style.paddingTop = '50px'
-        } else {
-            display.style.paddingTop = '25px'
+    let graphHeight
+    let firstBar
+    let secondBar
+    let thirdBar
+    if (ceiling <= 750000) {
+        graphHeight = ceiling * (1 / 2000)
+        firstBar = firstCount * (1 / 2000)
+        secondBar = secondCount * (1 / 2000)
+        thirdBar = thirdCount * (1 / 2000)
+    } else {
+        graphHeight = 750
+        firstBar = (firstCount/ceiling)*750
+        secondBar = (secondCount/ceiling)*750
+        thirdBar = (thirdCount/ceiling)*750
+    }
+
+    // if (firstCount < 1000000) {
+    //     ceiling = 1000000
+    // } else {
+    //     ceiling = Math.floor(firstCount * 1.1)
+    // }
+    
+    // if (firstCount < 750000) {
+    //     let firstBar = firstCount * (1/2000)
+    //     let secondBar = secondCount * (1/2000)
+    //     let thirdBar = thirdCount * (1/2000)
+    // } else {
+
+    // }
+
+
+
+    let display = document.querySelector('#display')
+    let scale = document.querySelector('#scale')
+    display.style.height = `${graphHeight}px`
+    display.style.width = `700px`
+    scale.style.height = `${graphHeight}px`
+    scale.style.width = `2px`
+
+
+    let label1 = document.querySelector('#label1')
+    let label2 = document.querySelector('#label2')
+    let label3 = document.querySelector('#label3')
+    let axisLabel1 = document.querySelector('#axisLabel1')
+    let axisLabel2 = document.querySelector('#axisLabel2')
+    let axisLabel3 = document.querySelector('#axisLabel3')
+    let info1 = document.querySelector('#info1')
+    let info2 = document.querySelector('#info2')
+    let info3 = document.querySelector('#info3')
+
+    let bar1 = document.querySelector('#bar1')
+    let bar2 = document.querySelector('#bar2')
+    let bar3 = document.querySelector('#bar3')
+    bar1.style.height = `${firstBar}px`
+    bar2.style.height = `${secondBar}px`
+    bar3.style.height = `${thirdBar}px`
+    label1.style.bottom = `${graphHeight-5}px`
+    label2.style.bottom = `${(graphHeight/2)-5}px`
+    label3.style.bottom = '-5px'
+    axisLabel1.innerText = `${numDisplayer(ceiling.toString())}`
+    axisLabel2.innerText = `${numDisplayer((ceiling/2).toString())}`
+    axisLabel3.innerText = `0`
+    info1.style.width = '200px'
+    info1.style.height = '50px'
+    info2.style.width = '200px'
+    info2.style.height = '50px'
+    info3.style.width = '200px'
+    info3.style.height = '50px'
+    info1.style.bottom = `${firstBar+20}px`
+    info2.style.bottom = `${secondBar+20}px`
+    info3.style.bottom = `${thirdBar+20}px`
+    if (graphHeight - firstBar < 20) {
+        display.style.paddingTop = '80px'
+    } else if (graphHeight - firstBar < 50) {
+        display.style.paddingTop = '50px'
+    } else {
+        display.style.paddingTop = '25px'
+    }
+
+    //getting the page info locations
+    let p1 = document.querySelector('#p1')
+    let p2 = document.querySelector('#p2')
+    let p3 = document.querySelector('#p3')
+    
+
+    //titleProcessor removes the _'s from the data's titles
+    //and replaces them with spaces
+    p1.innerText = `${titleProcessor(first.article)}
+                    Views: ${numDisplayer(first.views.toString())}`
+    p2.innerText = `${titleProcessor(second.article)}
+                    Views: ${numDisplayer(second.views.toString())}`
+    p3.innerText = `${titleProcessor(third.article)}
+                    Views: ${numDisplayer(third.views.toString())}`
+
+    let h2 = document.querySelector('#events')
+    h2.innerText = "What happened on this day?"
+
+    //creating the links to the google searches of these
+    //topics on their relevant day
+    let link1 = document.querySelector('#link1')
+    let link2 = document.querySelector('#link2')
+    let link3 = document.querySelector('#link3')
+    let hl1 = document.querySelector('#hl1')
+    let hl2 = document.querySelector('#hl2')
+    let hl3 = document.querySelector('#hl3')
+    link1.innerText = `See what's happening with ${titleProcessor(first.article)}`
+    link2.innerText = `See what's happening with ${titleProcessor(second.article)}`
+    link3.innerText = `See what's happening with ${titleProcessor(third.article)}`
+    hl1.setAttribute('href', linkMaker(titleProcessor(first.article), month, day, year))
+    hl1.setAttribute('target', '_blank')
+    hl2.setAttribute('href', linkMaker(titleProcessor(second.article), month, day, year))
+    hl2.setAttribute('target', '_blank')
+    hl3.setAttribute('href', linkMaker(titleProcessor(third.article), month, day, year))
+    hl3.setAttribute('target', '_blank')
+    
+    let wiki1 = document.querySelector('#wiki1')
+    let wiki2 = document.querySelector('#wiki2')
+    let wiki3 = document.querySelector('#wiki3')
+    wiki1.innerText = `View ${titleProcessor(first.article)}'s Wikipedia page here`
+    wiki2.innerText = `View ${titleProcessor(second.article)}'s Wikipedia page here`
+    wiki3.innerText = `View ${titleProcessor(third.article)}'s Wikipedia page here`
+    let wikilink1 = document.querySelector('#wikilink1')
+    let wikilink2 = document.querySelector('#wikilink2')
+    let wikilink3 = document.querySelector('#wikilink3')
+    wikilink1.setAttribute('href', `https://en.wikipedia.org/wiki/${first.article}`)
+    wikilink1.setAttribute('target', '_blank')
+    wikilink2.setAttribute('href', `https://en.wikipedia.org/wiki/${second.article}`)
+    wikilink2.setAttribute('target', '_blank')
+    wikilink3.setAttribute('href', `https://en.wikipedia.org/wiki/${third.article}`)
+    wikilink3.setAttribute('target', '_blank')
+    
+    let n = 0
+    let btnDiv
+    let btn
+    let btnCount = 0
+    let btnForMore
+    let btnForMoreDiv = document.querySelector('#btnForMoreDiv')
+    if (runCount == 0) {
+        console.log('hello its at zero')
+        btnDiv = document.querySelector('#btnDiv')
+        btn = document.createElement('button')
+        btn.setAttribute('id', 'cardButton')
+        btn.innerText = "Click here to see more"
+        btnDiv.append(btn)
+        n = 0
+        runCount++
+    }
+    btn.addEventListener('click', (e) => {
+        for (n; n < 10; n++) {
+            cardCreator(n, artArr)
         }
-
-        //getting the page info locations
-        let p1 = document.querySelector('#p1')
-        let p2 = document.querySelector('#p2')
-        let p3 = document.querySelector('#p3')
-        
-
-        //titleProcessor removes the _'s from the data's titles
-        //and replaces them with spaces
-        p1.innerText = `${titleProcessor(first.article)}
-                      Views: ${numDisplayer(first.views.toString())}`
-        p2.innerText = `${titleProcessor(second.article)}
-                      Views: ${numDisplayer(second.views.toString())}`
-        p3.innerText = `${titleProcessor(third.article)}
-                      Views: ${numDisplayer(third.views.toString())}`
-
-        let h2 = document.querySelector('#events')
-        h2.innerText = "What happened on this day?"
-
-        //creating the links to the google searches of these
-        //topics on their relevant day
-        let link1 = document.querySelector('#link1')
-        let link2 = document.querySelector('#link2')
-        let link3 = document.querySelector('#link3')
-        let hl1 = document.querySelector('#hl1')
-        let hl2 = document.querySelector('#hl2')
-        let hl3 = document.querySelector('#hl3')
-        link1.innerText = `See what's happening with ${titleProcessor(first.article)}`
-        link2.innerText = `See what's happening with ${titleProcessor(second.article)}`
-        link3.innerText = `See what's happening with ${titleProcessor(third.article)}`
-        hl1.setAttribute('href', linkMaker(titleProcessor(first.article), month, day, year))
-        hl1.setAttribute('target', '_blank')
-        hl2.setAttribute('href', linkMaker(titleProcessor(second.article), month, day, year))
-        hl2.setAttribute('target', '_blank')
-        hl3.setAttribute('href', linkMaker(titleProcessor(third.article), month, day, year))
-        hl3.setAttribute('target', '_blank')
-        
-        let wiki1 = document.querySelector('#wiki1')
-        let wiki2 = document.querySelector('#wiki2')
-        let wiki3 = document.querySelector('#wiki3')
-        wiki1.innerText = `View ${titleProcessor(first.article)}'s Wikipedia page here`
-        wiki2.innerText = `View ${titleProcessor(second.article)}'s Wikipedia page here`
-        wiki3.innerText = `View ${titleProcessor(third.article)}'s Wikipedia page here`
-        let wikilink1 = document.querySelector('#wikilink1')
-        let wikilink2 = document.querySelector('#wikilink2')
-        let wikilink3 = document.querySelector('#wikilink3')
-        wikilink1.setAttribute('href', `https://en.wikipedia.org/wiki/${first.article}`)
-        wikilink1.setAttribute('target', '_blank')
-        wikilink2.setAttribute('href', `https://en.wikipedia.org/wiki/${second.article}`)
-        wikilink2.setAttribute('target', '_blank')
-        wikilink3.setAttribute('href', `https://en.wikipedia.org/wiki/${third.article}`)
-        wikilink3.setAttribute('target', '_blank')
-        
-        let n = 0
-        let btnDiv
-        let btn
-        let btnCount = 0
-        let btnForMore
-        let btnForMoreDiv = document.querySelector('#btnForMoreDiv')
-        if (runCount == 0) {
-            console.log('hello its at zero')
-            btnDiv = document.querySelector('#btnDiv')
-            btn = document.createElement('button')
-            btn.setAttribute('id', 'cardButton')
-            btn.innerText = "Click here to see more"
-            btnDiv.append(btn)
-            n = 0
-            runCount++
+        if (btnCount === 0) {
+            console.log('hello, its at zero here')
+            btnForMore = document.createElement('button')
+            btnForMore.innerText = 'Click to see 10 more'
+            btnForMore.setAttribute('id', 'btnForMore')
+            btnForMoreDiv.append(btnForMore)
+            console.log('here comes the btncount')
+            btnCount++
+            console.log(btnCount)
         }
-        btn.addEventListener('click', (e) => {
-            for (n; n < 10; n++) {
+        btnForMore.addEventListener('click', (e) => {
+            let k = n + 10
+            for (n; n < k; n++) {
                 cardCreator(n, artArr)
             }
-            if (btnCount === 0) {
-                console.log('hello, its at zero here')
-                btnForMore = document.createElement('button')
-                btnForMore.innerText = 'Click to see 10 more'
-                btnForMore.setAttribute('id', 'btnForMore')
-                btnForMoreDiv.append(btnForMore)
-                console.log('here comes the btncount')
-                btnCount++
-                console.log(btnCount)
-            }
-            btnForMore.addEventListener('click', (e) => {
-                let k = n + 10
-                for (n; n < k; n++) {
-                    cardCreator(n, artArr)
-                }
-                console.log(n)
-            }
-            )
-        })
+            console.log(n)
+        }
+        )
     })
 })
+})
+
 
 // let url = 'https://en.wikipedia.org/w/api.php'
 
