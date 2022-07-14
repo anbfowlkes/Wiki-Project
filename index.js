@@ -148,11 +148,13 @@ let cardCreator = (num, data) => {
     wikiViews.setAttribute('id', 'wikiViews')
     aTag.innerText = 'Wikipedia Link'
     aTag.setAttribute('href', `https://en.wikipedia.org/wiki/${titleProcessor(data[num].article) }`)
+    aTag.setAttribute('target', '_blank')
     wikiHL.append(aTag)
     wikiHL.setAttribute('id', 'wikiHL')
     topicalTag = document.createElement('a')
     topicalTag.innerText = "What's Happening"
     topicalTag.setAttribute('href', topicalLink)
+    topicalTag.setAttribute('target', '_blank')
     daySearch.append(topicalTag)
     daySearch.setAttribute('id', 'daySearch')
     newDiv.setAttribute('id', 'newDiv')
@@ -183,7 +185,8 @@ form.addEventListener('submit', (e) => {
     let day = document.querySelector('#day').value
     let year = document.querySelector('#year').value
 
-    
+    let h1 = document.querySelector('#h1')
+    h1.style.marginTop = '20px';    
 
     if (dayVerifier(month, day, year) === false) {
         return
@@ -233,7 +236,6 @@ form.addEventListener('submit', (e) => {
 
 
         //calculations
-        let topThreeTotal = firstCount + secondCount + thirdCount
         let ceiling
         if (firstCount < 250000) {
             ceiling = 250000
@@ -251,6 +253,7 @@ form.addEventListener('submit', (e) => {
         let display = document.querySelector('#display')
         let scale = document.querySelector('#scale')
         display.style.height = `${graphHeight}px`
+        display.style.width = `700px`
         scale.style.height = `${graphHeight}px`
         scale.style.width = `2px`
 
@@ -280,6 +283,12 @@ form.addEventListener('submit', (e) => {
         axisLabel1.innerText = `${numDisplayer(ceiling.toString())}`
         axisLabel2.innerText = `${numDisplayer((ceiling/2).toString())}`
         axisLabel3.innerText = `0`
+        info1.style.width = '200px'
+        info1.style.height = '50px'
+        info2.style.width = '200px'
+        info2.style.height = '50px'
+        info3.style.width = '200px'
+        info3.style.height = '50px'
         info1.style.bottom = `${firstBar+20}px`
         info2.style.bottom = `${secondBar+20}px`
         info3.style.bottom = `${thirdBar+20}px`
@@ -307,7 +316,7 @@ form.addEventListener('submit', (e) => {
                       Views: ${numDisplayer(third.views.toString())}`
 
         let h2 = document.querySelector('#events')
-        h2.innerText = "What happened on these days?"
+        h2.innerText = "What happened on this day?"
 
         //creating the links to the google searches of these
         //topics on their relevant day
@@ -366,6 +375,7 @@ form.addEventListener('submit', (e) => {
             if (btnCount === 0) {
                 console.log('hello, its at zero here')
                 btnForMore = document.createElement('button')
+                btnForMore.innerText = 'Click to see 10 more'
                 btnForMore.setAttribute('id', 'btnForMore')
                 btnForMoreDiv.append(btnForMore)
                 console.log('here comes the btncount')
@@ -384,30 +394,30 @@ form.addEventListener('submit', (e) => {
     })
 })
 
-let url = 'https://en.wikipedia.org/w/api.php'
+// let url = 'https://en.wikipedia.org/w/api.php'
 
-let params = {
-    action: "query",
-    prop: "images",
-    titles: "Usain Bolt",
-    format: "json"
-}
+// let params = {
+//     action: "query",
+//     prop: "images",
+//     titles: "Usain Bolt",
+//     format: "json"
+// }
 
-url += "?origin=*"
+// url += "?origin=*"
 
-Object.keys(params).forEach((key) => {
-    {url += "&" + key + "=" + params[key]}
-})
+// Object.keys(params).forEach((key) => {
+//     {url += "&" + key + "=" + params[key]}
+// })
 
-fetch(url)
-    .then((res) => res.json())
-    .then((data) => {
-        let pages = data.query.pages
+// fetch(url)
+//     .then((res) => res.json())
+//     .then((data) => {
+//         let pages = data.query.pages
         // console.log(pages)
         // for (let page in pages) {
         //     for (let img of pages[page].images) {
         //         console.log(img.title)
         //     }
         // }
-    })
+    // })
 //source: https://www.mediawiki.org/wiki/API:Images#JavaScript

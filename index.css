@@ -13,6 +13,10 @@ body {
     /* background-image: url(https://wallpaperaccess.com/full/7408447.jpg); */
 }
 
+h1 {
+    margin-top: 200px;
+}
+
 #specifics {
     margin-top: -10px;
 }
@@ -55,10 +59,9 @@ input[type="submit"] {
     }
 
 #display {
-    height: 300px;
-    width: 700px;
+
     background-color: var(--color1);
-    padding-top: 50px;
+    /* padding-top: 50px; */
     margin: auto;
     position: relative;
 }
@@ -120,8 +123,8 @@ input[type="submit"] {
 
 #info1, #info2, #info3 {
     /* border: solid black; */
-    width: 200px;
-    height: 50px;
+    /* width: 200px;
+    height: 50px; */
     float: left;
     position: absolute;
     background-color: var(--color1);
@@ -210,7 +213,7 @@ input[type="submit"] {
 
 #btnForMore {
     border: solid black;
-    width: 50px;
-    height: 10px;
+    width: 200px;
+    height: 30px;
 }
 
