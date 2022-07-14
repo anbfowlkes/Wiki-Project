@@ -1,6 +1,6 @@
 :root {
     --color1: #aaa;
-    --buttonColor: #64750c;
+    --buttonColor: gray;
 }
 
 * {
@@ -9,7 +9,8 @@
 }
 
 body {
-    background-color: #5d70cb;
+    background: linear-gradient(90deg, rgb(182, 255, 255), rgb(88, 175, 236));
+    color: gray;
     /* background-image: url(https://wallpaperaccess.com/full/7408447.jpg); */
 }
 
