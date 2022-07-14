@@ -168,9 +168,10 @@ let cardCreator = (num, data) => {
     leftDiv.append(wikiViews)
     rightDiv.append(daySearch)
     rightDiv.append(wikiHL)
-    console.log(wikiHL)
-    console.log(aTag)
 
+    // let hr = document.createElement('hr')
+    // hr.setAttribute('id', 'hr')
+    // leftDiv.append(hr)
 }
 
 let postDate = (month, day, year) => {
@@ -279,13 +280,13 @@ form.addEventListener('submit', async (e) => {
             let thirdBar
 
             //calculations
-            if (firstCount < 250000) {
-                ceiling = 250000
-            } else if (firstCount < 500000) {
-                ceiling = 500000
-            } else if (firstCount < 750000) {
-                ceiling = 750000
-            } else {
+            // if (firstCount < 250000) {
+            //     ceiling = 250000
+            // } else if (firstCount < 500000) {
+            //     ceiling = 500000
+            // } else if (firstCount < 750000) {
+            //     ceiling = 750000
+            // } else {
                 let x = Math.floor(firstCount * 1.1)
                 x = x.toString()
                 xArr = x.split('')
@@ -297,19 +298,19 @@ form.addEventListener('submit', async (e) => {
                     newNum += xArr[i]
                 }
                 ceiling = parseInt(newNum)
-            }
+            // }
             console.log(ceiling)
-            if (ceiling <= 750000) {
-                graphHeight = ceiling * (1 / 2000)
-                firstBar = firstCount * (1 / 2000)
-                secondBar = secondCount * (1 / 2000)
-                thirdBar = thirdCount * (1 / 2000)
-            } else {
-                graphHeight = 350
-                firstBar = (firstCount / ceiling) * 350
-                secondBar = (secondCount / ceiling) * 350
-                thirdBar = (thirdCount / ceiling) * 350
-            }
+            // if (ceiling <= 750000) {
+            //     graphHeight = ceiling * (1 / 2000)
+            //     firstBar = firstCount * (1 / 2000)
+            //     secondBar = secondCount * (1 / 2000)
+            //     thirdBar = thirdCount * (1 / 2000)
+            // } else {
+                graphHeight = 250
+                firstBar = (firstCount / ceiling) * 250
+                secondBar = (secondCount / ceiling) * 250
+                thirdBar = (thirdCount / ceiling) * 250
+            // }
             console.log(graphHeight)
             let display = document.querySelector('#display')
             let scale = document.querySelector('#scale')
@@ -400,9 +401,9 @@ form.addEventListener('submit', async (e) => {
             let wiki1 = document.querySelector('#wiki1')
             let wiki2 = document.querySelector('#wiki2')
             let wiki3 = document.querySelector('#wiki3')
-            wiki1.innerText = `View ${titleProcessor(first.article)}'s Wikipedia page`
-            wiki2.innerText = `View ${titleProcessor(second.article)}'s Wikipedia page`
-            wiki3.innerText = `View ${titleProcessor(third.article)}'s Wikipedia page`
+            wiki1.innerText = `${titleProcessor(first.article)}'s Wikipedia page`
+            wiki2.innerText = `${titleProcessor(second.article)}'s Wikipedia page`
+            wiki3.innerText = `${titleProcessor(third.article)}'s Wikipedia page`
             let wikilink1 = document.querySelector('#wikilink1')
             let wikilink2 = document.querySelector('#wikilink2')
             let wikilink3 = document.querySelector('#wikilink3')
