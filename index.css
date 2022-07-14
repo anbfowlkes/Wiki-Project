@@ -1,6 +1,6 @@
 :root {
     --color1: #aaa;
-    --buttonColor: gray;
+    --buttonColor: lightgray;
 }
 
 * {
@@ -16,6 +16,7 @@ body {
 
 h1 {
     margin-top: 200px;
+    text-shadow: 0px 3px 5px #fff;
 }
 
 #specifics {
@@ -28,6 +29,11 @@ h1 {
 
 #month, #day, #year {
     width: 50px;
+    border-radius: 8px;
+}
+
+#submitter {
+    border-radius: 8px;
 }
 
 #form-container {
@@ -65,6 +71,7 @@ input[type="submit"] {
     /* padding-top: 50px; */
     margin: auto;
     position: relative;
+    color: black;
 }
 
 #scale {
@@ -147,10 +154,27 @@ input[type="submit"] {
     background-color: var(--color1);
 }
 
+a {
+    color: black;
+}
+
+/* a:hover {
+    color: blue;
+}
+
+a:visited {
+    color: green;
+} */
+
+#events {
+    color: black;
+}
+
 #happenings {
     display: flex;
     justify-content: center;
     margin-bottom: 50px;
+    color: black;
 }
 
 #hap1, #hap2, #hap3 {
@@ -174,6 +198,7 @@ input[type="submit"] {
     align-items: center;
     display: flex;
     flex-direction: column;
+    color: black;
 }
 
 #newDiv {

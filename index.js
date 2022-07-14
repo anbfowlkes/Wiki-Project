@@ -172,12 +172,33 @@ let cardCreator = (num, data) => {
     console.log(aTag)
     
 }
-let runCount = 0
+
+let postDate = (month, day, year) => {
+    let dataObj = {
+        day: day,
+        month: month,
+        year: year
+    }
+    let configObj = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(dataObj)
+    }
+    fetch('http://localhost:3000/date', configObj)
+    .then((res) => {
+        return res.json()
+    })
+    .then((data) => {
+        console.log(data)
+    })
+}
 
 // let getImage = (url, params)
-
+let runCount = 0
 let form = document.querySelector('#form')
-
 form.addEventListener('submit', (e) => {
     e.preventDefault()
     //getting the input from the user
@@ -186,11 +207,14 @@ form.addEventListener('submit', (e) => {
     let year = document.querySelector('#year').value
 
     let h1 = document.querySelector('#h1')
-    h1.style.marginTop = '20px';    
 
     if (dayVerifier(month, day, year) === false) {
         return
     }
+    h1.style.marginTop = '20px';
+
+    postDate(month, day, year)
+
 
     //fetching the data
     fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)

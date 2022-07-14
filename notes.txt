@@ -1,2 +1,10 @@
 12/29/2021 has an extreme case, John Madden got 1.4 million views
 12/25/2021 has a case where the top bar is super close to the ceiling
+
+
+clone it first with ssh
+//to put it back:
+git add . -> git commit -m '' -> git push
+
+//in the folder where the project is
+git pull origin main
