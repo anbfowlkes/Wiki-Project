@@ -221,6 +221,10 @@ let cleanData = (arr) => {
     }
 }
 
+let favoritor = () => {
+
+}
+
 // let getImage = (url, params)
 let runCount = 0
 let form = document.querySelector('#form')
@@ -255,7 +259,6 @@ form.addEventListener('submit', async (e) => {
         // })
     let req = await fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
     let data = await req.json()
-    console.log(data)
         // .then((data) => {
 
             //extracting the array of wikipedia pages
@@ -299,7 +302,7 @@ form.addEventListener('submit', async (e) => {
                 }
                 ceiling = parseInt(newNum)
             // }
-            console.log(ceiling)
+            // console.log(ceiling)
             // if (ceiling <= 750000) {
             //     graphHeight = ceiling * (1 / 2000)
             //     firstBar = firstCount * (1 / 2000)
@@ -311,7 +314,7 @@ form.addEventListener('submit', async (e) => {
                 secondBar = (secondCount / ceiling) * 250
                 thirdBar = (thirdCount / ceiling) * 250
             // }
-            console.log(graphHeight)
+            // console.log(graphHeight)
             let display = document.querySelector('#display')
             let scale = document.querySelector('#scale')
             display.style.height = `${graphHeight}px`
@@ -421,8 +424,6 @@ form.addEventListener('submit', async (e) => {
                 cardContainer.innerHTML = ''
                 btnForMoreDiv.innerHTML = ''
                 btnDiv.innerHTML = ''
-                console.log(cardContainer)
-                console.log(btnForMoreDiv)
             }
             
 
@@ -443,21 +444,17 @@ form.addEventListener('submit', async (e) => {
             btn.addEventListener('click', async () => {
                 let goGet = await fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
                 let theData = await goGet.json()
-                console.log(theData)
                 let theDataArr = theData.items[0].articles
                 cleanData(theDataArr)
                 for (n; n < 10; n++) {
                     cardCreator(n, theDataArr)
                 }
                 if (btnCount === 0) {
-                    console.log('hello, its at zero here')
                     btnForMore = document.createElement('button')
                     btnForMore.innerText = 'Click to see 10 more'
                     btnForMore.setAttribute('id', 'btnForMore')
                     btnForMoreDiv.append(btnForMore)
-                    console.log('here comes the btncount')
                     btnCount++
-                    console.log(btnCount)
                 }
                 btnForMore.addEventListener('click', async () => {
                     let request = await fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
@@ -468,7 +465,6 @@ form.addEventListener('submit', async (e) => {
                     for (n; n < k; n++) {
                         cardCreator(n, articlesArr)
                     }
-                    console.log(n)
                 }
                 )
             })
