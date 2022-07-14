@@ -195,10 +195,35 @@ let postDate = (month, day, year) => {
         })
 }
 
+let getDate = async () => {
+    let req = await fetch('http://http://localhost:3000/date')
+    let res = await req.json()
+    return res
+}
+
+//removing unwanted values
+//its important to iterate backwards so slicing
+//does not affect the other values
+let cleanData = (arr) => {
+    // console.log(typeof arr[0])
+    for (let i = 100; i >= 0; i--) {
+        // console.log(arr[i].article.substring(0, 7))
+        if (
+            arr[i].article == "Main_Page" ||
+            /Special:/.test(arr[i].article.substring(0,8)) ||
+            arr[i].article == "404.php" ||
+            arr[i].article == "Wikipedia:Contact_us" ||
+            arr[i].article == "AMGTV"
+        ) {
+            arr.splice(i, 1)
+        }
+    }
+}
+
 // let getImage = (url, params)
 let runCount = 0
 let form = document.querySelector('#form')
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', async (e) => {
     e.preventDefault()
     //getting the input from the user
     let month = document.querySelector('#month').value
@@ -214,41 +239,31 @@ form.addEventListener('submit', (e) => {
 
     postDate(month, day, year)
 
+    // location.reload()
+
+    // let date = getDate()
+    // console.log(date)
+    // month = date.month
+    // day = date.day
+    // year = date.year
 
     //fetching the data
-    fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
-        .then((res) => {
-            return res.json()
-        })
-        .then((data) => {
+    // fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
+        // .then((res) => {
+        //     return res.json()
+        // })
+    let req = await fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
+    let data = await req.json()
+    console.log(data)
+        // .then((data) => {
 
             //extracting the array of wikipedia pages
             //there's 1000 of them, each with a title,
             //a view count, and a rank
             //they are presorted by view count
             let artArr = data.items[0].articles
-
-            //removing unwanted values
-            //its important to iterate backwards so slicing
-            //does not affect the other values
-            for (let i = 100; i >= 0; i--) {
-                if (
-                    artArr[i].article == "Main_Page" ||
-                    artArr[i].article == "Special:Search" ||
-                    artArr[i].article == "Special:CreateAccount" ||
-                    artArr[i].article == "Special:Watchlist" ||
-                    artArr[i].article == "Special:LinkSearch" ||
-                    artArr[i].article == "Special:MobileMenu" ||
-                    artArr[i].article == "Portal:Current_events" ||
-                    artArr[i].article == "Special:CiteThisPage" ||
-                    artArr[i].article == "Special:Book" ||
-                    artArr[i].article == "404.php" ||
-                    artArr[i].article == "Wikipedia:Contact_us" ||
-                    artArr[i].article == "AMGTV"
-                ) {
-                    artArr.splice(i, 1)
-                }
-            }
+           
+            cleanData(artArr)
 
             let first = data.items[0].articles[0]
             let second = data.items[0].articles[1]
@@ -398,24 +413,40 @@ form.addEventListener('submit', (e) => {
             wikilink3.setAttribute('href', `https://en.wikipedia.org/wiki/${third.article}`)
             wikilink3.setAttribute('target', '_blank')
 
+            if (runCount >= 1) {
+                let cardContainer = document.querySelector('#cardContainer')
+                let btnForMoreDiv = document.querySelector('#btnForMoreDiv')
+                let btnDiv = document.querySelector('#btnDiv')
+                cardContainer.innerHTML = ''
+                btnForMoreDiv.innerHTML = ''
+                btnDiv.innerHTML = ''
+                console.log(cardContainer)
+                console.log(btnForMoreDiv)
+            }
+            
+
             let n = 0
             let btnDiv
             let btn
             let btnCount = 0
             let btnForMore
             let btnForMoreDiv = document.querySelector('#btnForMoreDiv')
-            if (runCount == 0) {
+            // if (runCount === 0) {
                 btnDiv = document.querySelector('#btnDiv')
                 btn = document.createElement('button')
                 btn.setAttribute('id', 'cardButton')
                 btn.innerText = "Click here to see more"
                 btnDiv.append(btn)
-                n = 0
                 runCount++
-            }
-            btn.addEventListener('click', (e) => {
+            // }
+            btn.addEventListener('click', async () => {
+                let goGet = await fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
+                let theData = await goGet.json()
+                console.log(theData)
+                let theDataArr = theData.items[0].articles
+                cleanData(theDataArr)
                 for (n; n < 10; n++) {
-                    cardCreator(n, artArr)
+                    cardCreator(n, theDataArr)
                 }
                 if (btnCount === 0) {
                     console.log('hello, its at zero here')
@@ -427,17 +458,21 @@ form.addEventListener('submit', (e) => {
                     btnCount++
                     console.log(btnCount)
                 }
-                btnForMore.addEventListener('click', (e) => {
+                btnForMore.addEventListener('click', async () => {
+                    let request = await fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
+                    let response = await request.json()
+                    let articlesArr = response.items[0].articles
+                    cleanData(articlesArr)
                     let k = n + 10
                     for (n; n < k; n++) {
-                        cardCreator(n, artArr)
+                        cardCreator(n, articlesArr)
                     }
                     console.log(n)
                 }
                 )
             })
         })
-})
+// })
 
 // let url = 'https://en.wikipedia.org/w/api.php'
 
