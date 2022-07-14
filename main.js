@@ -142,7 +142,7 @@ let cardCreator = (num, data) => {
         document.querySelector('#month').value,
         document.querySelector('#day').value,
         document.querySelector('#year').value))
-    wikiTitle.innerText = titleProcessor(data[num].article)
+    wikiTitle.innerText = `${num + 1} - ${titleProcessor(data[num].article)}`
     wikiTitle.setAttribute('id', 'wikiTitle')
     wikiViews.innerText = `Views: ${numDisplayer(data[num].views.toString())}`
     wikiViews.setAttribute('id', 'wikiViews')
@@ -183,7 +183,6 @@ let postDate = (month, day, year) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
         },
         body: JSON.stringify(dataObj)
     }
@@ -213,7 +212,7 @@ form.addEventListener('submit', (e) => {
     }
     h1.style.marginTop = '20px';
 
-    // postDate(month, day, year)
+    postDate(month, day, year)
 
 
     //fetching the data
@@ -386,9 +385,9 @@ form.addEventListener('submit', (e) => {
             let wiki1 = document.querySelector('#wiki1')
             let wiki2 = document.querySelector('#wiki2')
             let wiki3 = document.querySelector('#wiki3')
-            wiki1.innerText = `View ${titleProcessor(first.article)}'s Wikipedia page here`
-            wiki2.innerText = `View ${titleProcessor(second.article)}'s Wikipedia page here`
-            wiki3.innerText = `View ${titleProcessor(third.article)}'s Wikipedia page here`
+            wiki1.innerText = `View ${titleProcessor(first.article)}'s Wikipedia page`
+            wiki2.innerText = `View ${titleProcessor(second.article)}'s Wikipedia page`
+            wiki3.innerText = `View ${titleProcessor(third.article)}'s Wikipedia page`
             let wikilink1 = document.querySelector('#wikilink1')
             let wikilink2 = document.querySelector('#wikilink2')
             let wikilink3 = document.querySelector('#wikilink3')
