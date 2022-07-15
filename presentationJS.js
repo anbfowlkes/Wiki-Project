@@ -133,13 +133,15 @@ let dayVerifier = (month, day, year) => {
         }
     }
 }
-let month
-let day
-let year
+// let month
+// let day
+// let year
 let cardContainer = document.querySelector('#cardContainer')
 
 //creates a card with information, this is used in the listings
 //at the very bottom of the page
+//it creates 1 div, 2 more divs inside that div, and in each of those
+//2 p tags, in two of those p tags theres an a tag too
 let cardCreator = (num, data) => {
     let newDiv = document.createElement('div')
     let leftDiv = document.createElement('div')
@@ -179,39 +181,7 @@ let cardCreator = (num, data) => {
     leftDiv.append(wikiViews)
     rightDiv.append(daySearch)
     rightDiv.append(wikiHL)
-
-    // let hr = document.createElement('hr')
-    // hr.setAttribute('id', 'hr')
-    // leftDiv.append(hr)
 }
-
-// let postDate = (month, day, year) => {
-//     let dataObj = {
-//         day: day,
-//         month: month,
-//         year: year
-//     }
-//     let configObj = {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(dataObj)
-//     }
-//     fetch('http://localhost:3000/date', configObj)
-//         .then((res) => {
-//             return res.json()
-//         })
-//         .then((data) => {
-//             return
-//         })
-// }
-
-// let getDate = async () => {
-//     let req = await fetch('http://http://localhost:3000/date')
-//     let res = await req.json()
-//     return res
-// }
 
 //removing unwanted values
 //its important to iterate backwards so slicing
@@ -232,10 +202,7 @@ let cleanData = (arr) => {
     }
 }
 
-// let favoritor = () => {
-// }
-// let getImage = (url, params)
-
+//runCount controls the creation of the card display
 let runCount = 0
 let form = document.querySelector('#form')
 form.addEventListener('submit', async (e) => {
@@ -252,29 +219,13 @@ form.addEventListener('submit', async (e) => {
     }
     h1.style.marginTop = '20px';
 
-    // postDate(month, day, year)
-
-    // location.reload()
-
-    // let date = getDate()
-    // console.log(date)
-    // month = date.month
-    // day = date.day
-    // year = date.year
-
-    //fetching the data
-    // fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
-        // .then((res) => {
-        //     return res.json()
-        // })
     let req = await fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
     let data = await req.json()
-        // .then((data) => {
 
-            //extracting the array of wikipedia pages
-            //there's 1000 of them, each with a title,
-            //a view count, and a rank
-            //they are presorted by view count
+    //extracting the array of wikipedia pages
+    //there's 1000 of them, each with a title,
+    //a view count, and a rank
+    //they are presorted by view count
     let artArr = data.items[0].articles
     
     cleanData(artArr)
@@ -332,9 +283,6 @@ form.addEventListener('submit', async (e) => {
     scale.style.height = `${graphHeight}px`
     scale.style.width = `2px`
 
-    // let firstBar = firstCount * (1 / 2000)
-    // let secondBar = secondCount * (1 / 2000)
-    // let thirdBar = thirdCount * (1 / 2000)
 
     let label1 = document.querySelector('#label1')
     let label2 = document.querySelector('#label2')
@@ -444,12 +392,12 @@ form.addEventListener('submit', async (e) => {
     let btnForMore
     let btnForMoreDiv = document.querySelector('#btnForMoreDiv')
     // if (runCount === 0) {
-        btnDiv = document.querySelector('#btnDiv')
-        btn = document.createElement('button')
-        btn.setAttribute('id', 'cardButton')
-        btn.innerText = "Click here to see more"
-        btnDiv.append(btn)
-        runCount++
+    btnDiv = document.querySelector('#btnDiv')
+    btn = document.createElement('button') //button creation
+    btn.setAttribute('id', 'cardButton')
+    btn.innerText = "Click here to see more"
+    btnDiv.append(btn)
+    runCount++
     // }
     btn.addEventListener('click', async () => {
         let goGet = await fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
@@ -460,7 +408,7 @@ form.addEventListener('submit', async (e) => {
             cardCreator(n, theDataArr)
         }
         if (btnCount === 0) {
-            btnForMore = document.createElement('button')
+            btnForMore = document.createElement('button') //button creation
             btnForMore.innerText = 'Click to see 10 more'
             btnForMore.setAttribute('id', 'btnForMore')
             btnForMoreDiv.append(btnForMore)
@@ -479,32 +427,3 @@ form.addEventListener('submit', async (e) => {
         )
     })
 })
-// })
-
-// let url = 'https://en.wikipedia.org/w/api.php'
-
-// let params = {
-//     action: "query",
-//     prop: "images",
-//     titles: "Usain Bolt",
-//     format: "json"
-// }
-
-// url += "?origin=*"
-
-// Object.keys(params).forEach((key) => {
-//     {url += "&" + key + "=" + params[key]}
-// })
-
-// fetch(url)
-//     .then((res) => res.json())
-//     .then((data) => {
-//         let pages = data.query.pages
-        // console.log(pages)
-        // for (let page in pages) {
-        //     for (let img of pages[page].images) {
-        //         console.log(img.title)
-        //     }
-        // }
-    // })
-//source: https://www.mediawiki.org/wiki/API:Images#JavaScript
