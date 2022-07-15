@@ -1,5 +1,11 @@
-Functions: titleProcessor, linkMaker, numDisplayer,
-           dayVerifier, cardCreator, cleanData
+Functions: 
+titleProcessor
+linkMaker
+numDisplayer
+dayVerifier
+cardCreator
+cleanData
+
 
 12/29/2021 has an extreme case, John Madden got 1.4 million views
 12/25/2021 has a case where the top bar is super close to the ceiling
