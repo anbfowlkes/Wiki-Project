@@ -1,13 +1,17 @@
 Functions: 
-titleProcessor
-linkMaker
-numDisplayer
-dayVerifier
-cardCreator
-cleanData
+titleProcessor -> replaces underscores with spaces
+linkMaker -> creates a google search link to the day and the topic
+numDisplayer -> inserts commas to uncomma'd numbers
+dayVerifier -> checks if a day exists in the dataset
+cardCreator -> creates the display table at the bottom of the page
+cleanData -> removes undesirable entries from the dataset
 
+for the graph: 
+-ceiling = the top of the scale
+-ceiling 10% more than the first bar (rounded down to a nice number)
+-padding is added at the top of the graph if the top bar is close to the ceiling
+-this is to make room for the info box that display over the bars
+-the graph's height is 250px, all bars are proportions of this value
 
 12/29/2021 has an extreme case, John Madden got 1.4 million views
 12/25/2021 has a case where the top bar is super close to the ceiling
-
-design idea is influenced by wolframalpha

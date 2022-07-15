@@ -192,6 +192,7 @@ a:visited {
     position: relative;
     top: -25px;
     margin-top: 20px;
+    border-radius: 8px;
 }
 
 
@@ -245,5 +246,6 @@ a:visited {
     background-color: var(--buttonColor);
     margin-top: 10px;
     margin-bottom: 40px;
+    border-radius: 8px;
 }
 

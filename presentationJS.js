@@ -176,7 +176,6 @@ let cardCreator = (num, data) => {
     newDiv.append(leftDiv)
     newDiv.append(rightDiv)
     cardContainer.append(newDiv)
-
     leftDiv.append(wikiTitle)
     leftDiv.append(wikiViews)
     rightDiv.append(daySearch)
@@ -214,18 +213,22 @@ form.addEventListener('submit', async (e) => {
 
     let h1 = document.querySelector('#h1')
 
+    //if dayVerifier returns false nothing else below this activates
     if (dayVerifier(month, day, year) === false) {
         return
     }
+
+    //this makes the initial info screen move to the top to make room
+    //for the rest of the page
     h1.style.marginTop = '20px';
 
+    //fetching the data
     let req = await fetch(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${year}/${month}/${day}`)
     let data = await req.json()
 
     //extracting the array of wikipedia pages
-    //there's 1000 of them, each with a title,
-    //a view count, and a rank
-    //they are presorted by view count
+    //there's 1000 of them, each with a title,a view count,
+    //and a rank, they are presorted by view count
     let artArr = data.items[0].articles
     
     cleanData(artArr)
@@ -244,13 +247,6 @@ form.addEventListener('submit', async (e) => {
     let thirdBar
 
     //calculations
-    // if (firstCount < 250000) {
-    //     ceiling = 250000
-    // } else if (firstCount < 500000) {
-    //     ceiling = 500000
-    // } else if (firstCount < 750000) {
-    //     ceiling = 750000
-    // } else {
     let x = Math.floor(firstCount * 1.1)
     x = x.toString()
     xArr = x.split('')
@@ -262,27 +258,19 @@ form.addEventListener('submit', async (e) => {
         newNum += xArr[i]
     }
     ceiling = parseInt(newNum)
-    // }
-    // console.log(ceiling)
-    // if (ceiling <= 750000) {
-    //     graphHeight = ceiling * (1 / 2000)
-    //     firstBar = firstCount * (1 / 2000)
-    //     secondBar = secondCount * (1 / 2000)
-    //     thirdBar = thirdCount * (1 / 2000)
-    // } else {
     graphHeight = 250
     firstBar = (firstCount / ceiling) * 250
     secondBar = (secondCount / ceiling) * 250
     thirdBar = (thirdCount / ceiling) * 250
-    // }
-    // console.log(graphHeight)
+    //end of calculations
+
+    //building the graph
     let display = document.querySelector('#display')
     let scale = document.querySelector('#scale')
     display.style.height = `${graphHeight}px`
     display.style.width = `700px`
     scale.style.height = `${graphHeight}px`
     scale.style.width = `2px`
-
 
     let label1 = document.querySelector('#label1')
     let label2 = document.querySelector('#label2')
@@ -293,10 +281,10 @@ form.addEventListener('submit', async (e) => {
     let info1 = document.querySelector('#info1')
     let info2 = document.querySelector('#info2')
     let info3 = document.querySelector('#info3')
-
     let bar1 = document.querySelector('#bar1')
     let bar2 = document.querySelector('#bar2')
     let bar3 = document.querySelector('#bar3')
+
     bar1.style.height = `${firstBar}px`
     bar2.style.height = `${secondBar}px`
     bar3.style.height = `${thirdBar}px`
@@ -315,6 +303,8 @@ form.addEventListener('submit', async (e) => {
     info1.style.bottom = `${firstBar + 20}px`
     info2.style.bottom = `${secondBar + 20}px`
     info3.style.bottom = `${thirdBar + 20}px`
+
+    //conditional padding
     if (graphHeight - firstBar < 20) {
         display.style.paddingTop = '80px'
     } else if (graphHeight - firstBar < 50) {
@@ -323,11 +313,10 @@ form.addEventListener('submit', async (e) => {
         display.style.paddingTop = '25px'
     }
 
-    //getting the page info locations
+    //getting the 'What's happening on this day' info locations
     let p1 = document.querySelector('#p1')
     let p2 = document.querySelector('#p2')
     let p3 = document.querySelector('#p3')
-
 
     //titleProcessor removes the _'s from the data's titles
     //and replaces them with spaces
@@ -375,6 +364,8 @@ form.addEventListener('submit', async (e) => {
     wikilink3.setAttribute('href', `https://en.wikipedia.org/wiki/${third.article}`)
     wikilink3.setAttribute('target', '_blank')
 
+    //if the top form is resubmitted we clear the table at the bottom of
+    //the page
     if (runCount >= 1) {
         let cardContainer = document.querySelector('#cardContainer')
         let btnForMoreDiv = document.querySelector('#btnForMoreDiv')
@@ -384,14 +375,14 @@ form.addEventListener('submit', async (e) => {
         btnDiv.innerHTML = ''
     }
         
-
+    //'n' controls the card creator, its used in multiple loops and
+    //preserved between them
     let n = 0
     let btnDiv
     let btn
     let btnCount = 0
     let btnForMore
     let btnForMoreDiv = document.querySelector('#btnForMoreDiv')
-    // if (runCount === 0) {
     btnDiv = document.querySelector('#btnDiv')
     btn = document.createElement('button') //button creation
     btn.setAttribute('id', 'cardButton')
@@ -407,6 +398,8 @@ form.addEventListener('submit', async (e) => {
         for (n; n < 10; n++) {
             cardCreator(n, theDataArr)
         }
+        //we only create the last button (the one at the bottom of the screen)
+        //on the first click of the 'see more' button
         if (btnCount === 0) {
             btnForMore = document.createElement('button') //button creation
             btnForMore.innerText = 'Click to see 10 more'
